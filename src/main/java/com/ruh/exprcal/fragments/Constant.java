@@ -56,7 +56,7 @@ public class Constant extends ExpressionFragment{
         return new Number(BASIC_POS, 0.0);
     }
     
-    public static void addConstant(String cons,double value)
+    public static void add(String cons,double value)
     {
         if (isNotDefault(cons))
             cons_pool.put(cons.toUpperCase(), value);

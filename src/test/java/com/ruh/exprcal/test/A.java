@@ -19,7 +19,7 @@ public class A {
 
         try {
             String s = "(2/2/X)";
-            Constant.addConstant("X",4.0);
+            Constant.add("X",4.0);
             ExpressionRenderer e = new ExpressionRenderer(s, ExpressionRenderer.DEGREE, 4);
             System.out.println(e.getExpression());
             System.out.println(e.render().getResult());
