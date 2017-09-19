@@ -11,7 +11,7 @@ public abstract class ExpressionFragment implements java.io.Serializable {
     private String value;
     private int position;
     public static final int HIGH_OPT_PRIORITY = 999, LOW_OPT_PRIORITY = -999, BASIC_POS = 0;
-    public static final String FRAG_NUM = "NUMBER", FRAG_OPT = "OPERATOR", FRAG_SIGN = "SIGN", FRAG_BRACK = "BRACKET", FRAG_EXPR = "EXPRESSION", FRAG_FUNC = "FUNCTION";
+    public static final String FRAG_NUM = "NUMBER", FRAG_OPT = "OPERATOR", FRAG_SIGN = "SIGN", FRAG_BRACK = "BRACKET", FRAG_EXPR = "EXPRESSION", FRAG_FUNC = "FUNCTION", FRAG_CONS="CONSTANT";
 
     public ExpressionFragment(int pos, String value) {
         this.value = value;
@@ -79,6 +79,8 @@ public abstract class ExpressionFragment implements java.io.Serializable {
             return FRAG_EXPR;
         } else if (this.isFunction()) {
             return FRAG_FUNC;
+        } else if (this.isConstant()) {
+            return FRAG_CONS;
         }
         return "";
     }
@@ -94,6 +96,8 @@ public abstract class ExpressionFragment implements java.io.Serializable {
     public abstract boolean isExpression();
 
     public abstract boolean isFunction();
+    
+    public abstract boolean isConstant();
 
     @Override
     public String toString() {

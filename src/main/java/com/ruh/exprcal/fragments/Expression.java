@@ -27,15 +27,15 @@ public class Expression extends ExpressionFragment {
     private final Stack<Symbol> symbols = new Stack<>();
     private final Stack<ExpressionFragment> numbers = new Stack<>();
     private TreeMap<Integer, ExpressionFragment> frag = new TreeMap<Integer, ExpressionFragment>();
-    private final int trig_flag, round_scale;
+    private static int trig_flag, round_scale;
     Multimap<String, ExpressionFragment> fragUniteMap = ArrayListMultimap.create();
     private double result;
     private boolean solved=false;
 
-    public Expression(int pos, String s, int trig_flag, int round_scale) throws BadExpressionFragmentException, BadExpressionException {
+    public Expression(int pos, String s, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, s);
-        this.trig_flag = trig_flag;
-        this.round_scale = round_scale;
+        trig_flag = trig_fl;
+        round_scale = round_sc;
         formParseMap(s);
         sample();
     }
@@ -58,7 +58,46 @@ public class Expression extends ExpressionFragment {
         String temp = "";
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
-            if (Character.isAlphabetic(ch)) {
+            if (Character.isUpperCase(ch))
+            {
+                if (!"".equals(temp)) {
+
+                    for (String e : extractNumberBlocks(temp)) {
+                        int id = (frag.isEmpty()) ? 0 : (frag.size());
+                        frag.put(id, new Number(id, e));
+                        fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+//                        System.out.println(id + " Num " + frag.get(id));
+                    }
+
+                    temp = "";
+                }
+                String concat = ""; int k=0;
+                for (k=i;k<s.length();k++)
+                {
+                    if (Character.isUpperCase(s.charAt(k)))
+                        concat += s.charAt(k);
+                    else
+                        break;
+                }
+                int id = (frag.isEmpty()) ? 0 : (frag.size());
+
+                    frag.put(id, (ExpressionFragment) new Constant(id,concat,trig_flag));
+                    fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                    i=k-1;
+//                    System.out.println(id + " Constant " + frag.get(id));
+            }
+            else if (Character.isAlphabetic(ch)) {
+                if (!"".equals(temp)) {
+
+                    for (String e : extractNumberBlocks(temp)) {
+                        int id = (frag.isEmpty()) ? 0 : (frag.size());
+                        frag.put(id, new Number(id, e));
+                        fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+//                        System.out.println(id + " Num " + frag.get(id));
+                    }
+
+                    temp = "";
+                }
                 int j;
                 String concat = "";
                 int param = 0, flag = 1;
@@ -228,7 +267,11 @@ public class Expression extends ExpressionFragment {
             } else {
                 if (elem.isFunction()) {
                     numbers.push(((Function) elem).process().getResult());
-                } else {
+                }
+                else if (elem.isConstant()) {
+                    numbers.push(((Constant) elem).getData());
+                }
+                else {
                     numbers.push((Number) elem);
                 }
             }
@@ -263,8 +306,8 @@ public class Expression extends ExpressionFragment {
         for (int i = 0; i < frag.lastKey() - 1; i++) {
             ExpressionFragment elem = frag.get(i);
             ExpressionFragment post = frag.get(i + 1);
-            if (elem.isNumber() || elem.isFunction() || (elem.isBracket() && ((Bracket) elem).isClose())) {
-                if (post.isNumber() || post.isFunction() || (post.isBracket() && ((Bracket) post).isOpen())) {
+            if (elem.isNumber() || elem.isFunction() || elem.isConstant() || (elem.isBracket() && ((Bracket) elem).isClose())) {
+                if (post.isNumber() || post.isFunction() || post.isConstant() || (post.isBracket() && ((Bracket) post).isOpen())) {
                     temp.add(i);
                 }
             }
@@ -371,6 +414,11 @@ public class Expression extends ExpressionFragment {
 
     @Override
     public boolean isFunction() {
+        return false;
+    }
+
+    @Override
+    public boolean isConstant() {
         return false;
     }
 

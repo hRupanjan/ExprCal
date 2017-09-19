@@ -1,5 +1,7 @@
 package com.ruh.exprcal.test;
 
+import com.ruh.exprcal.fragments.Constant;
+import com.ruh.exprcal.fragments.Expression;
 import com.ruh.exprcal.renderer.ExpressionRenderer;
 
 /*
@@ -16,9 +18,11 @@ public class A {
     public static void main(String[] args) {
 
         try {
-            String s = "1.233---.999.00+sin(2*13+4)/cos(60)tan(45)";
-            System.out.println(new ExpressionRenderer(s, ExpressionRenderer.DEGREE, 4).getExpression());
-            System.out.println(new ExpressionRenderer(s, ExpressionRenderer.DEGREE, 4).render().getResult());
+            String s = "(2/2/X)";
+            Constant.addConstant("X",4.0);
+            ExpressionRenderer e = new ExpressionRenderer(s, ExpressionRenderer.DEGREE, 4);
+            System.out.println(e.getExpression());
+            System.out.println(e.render().getResult());
         } catch (Exception e) {
             e.printStackTrace();
         }

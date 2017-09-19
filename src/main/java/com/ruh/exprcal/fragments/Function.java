@@ -20,14 +20,14 @@ public class Function extends ExpressionFragment {
     private static final List<String> FUNCTIONS = Arrays.asList(DEFAULT_FUNCTIONS);
     private double result;
     private final double degree;
-    private final int trig_flag, round_scale;
+    private static int trig_flag, round_scale;
     public static final int DEGREE = 0, RADIAN = 1;
     private boolean processed=false;
 
-    public Function(int pos, String value, int trig_flag, int round_scale) throws BadExpressionFragmentException, BadExpressionException {
+    public Function(int pos, String value, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, value);
-        this.trig_flag = trig_flag;
-        this.round_scale = round_scale;
+        trig_flag = trig_fl;
+        round_scale = round_sc;
         formFunction(value);
         switch (trig_flag) {
             case DEGREE:
@@ -138,6 +138,11 @@ public class Function extends ExpressionFragment {
     @Override
     public boolean isFunction() {
         return true;
+    }
+    
+    @Override
+    public boolean isConstant() {
+        return false;
     }
 
 }

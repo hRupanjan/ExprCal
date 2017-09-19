@@ -63,6 +63,9 @@ public class Operator extends ExpressionFragment implements Symbol {
     public static Number operate(Number x, Operator opt, Number y) throws BadExpressionFragmentException {
         double a = x.getNumber();
         double b = y.getNumber();
+        
+        System.err.println(x+" "+opt+" "+y);//check it all
+        
         double temp;
         switch (opt.getOperator()) {
             case '+':
@@ -120,6 +123,7 @@ public class Operator extends ExpressionFragment implements Symbol {
             break;
             case ExpressionFragment.FRAG_NUM:
             case ExpressionFragment.FRAG_EXPR:
+            case ExpressionFragment.FRAG_CONS:
             case ExpressionFragment.FRAG_FUNC: {
                 if (Pattern.matches("[.0-9]", "" + post)) {
                     return BINARY;
@@ -193,10 +197,11 @@ public class Operator extends ExpressionFragment implements Symbol {
             case '-':
                 return 1;
             case '*':
-            case '/':
                 return 2;
-            case '^':
+            case '/':
                 return 3;
+            case '^':
+                return 4;
             default:
                 return ExpressionFragment.HIGH_OPT_PRIORITY;
         }
@@ -229,6 +234,11 @@ public class Operator extends ExpressionFragment implements Symbol {
 
     @Override
     public boolean isFunction() {
+        return false;
+    }
+    
+    @Override
+    public boolean isConstant() {
         return false;
     }
 

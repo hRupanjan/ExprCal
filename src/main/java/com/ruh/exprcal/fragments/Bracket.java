@@ -105,6 +105,11 @@ public class Bracket extends ExpressionFragment implements Symbol {
     public boolean isFunction() {
         return false;
     }
+    
+    @Override
+    public boolean isConstant() {
+        return false;
+    }
 
     @Override
     public char getChar() {

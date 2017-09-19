@@ -91,5 +91,10 @@ public class Sign extends ExpressionFragment {
     public boolean isFunction() {
         return false;
     }
+    
+    @Override
+    public boolean isConstant() {
+        return false;
+    }
 
 }

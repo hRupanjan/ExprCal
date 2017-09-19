@@ -90,6 +90,11 @@ public class Number extends ExpressionFragment implements Comparable<Number> {
     public boolean isFunction() {
         return false;
     }
+    
+    @Override
+    public boolean isConstant() {
+        return false;
+    }
 
     @Override
     public int compareTo(Number o) {
