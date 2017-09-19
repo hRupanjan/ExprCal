@@ -3,15 +3,14 @@ package com.ruh.exprcal.fragments;
 import com.ruh.exprcal.abstractions.ExpressionFragment;
 import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Rupanjan Hari
  */
 public class Constant extends ExpressionFragment{
-    private static final String DEFAULT_CONS[]={"PI"};
-    private static final double DEFAULT_CONS_VALUES[]={Math.PI};
+    private static final String DEFAULT_CONS[]={"PI","E"};
+    private static final double DEFAULT_CONS_VALUES[]={Math.PI,Math.E};
     private static HashMap<String,Double> cons_pool = new HashMap<>();
     private final String cons_name; 
     private static int trig_flag;

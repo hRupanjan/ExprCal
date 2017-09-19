@@ -252,7 +252,7 @@ public class Expression extends ExpressionFragment {
                 symbols.push((Bracket) elem);
             } else if (elem.isOpt() || elem.isBracket()) {
 
-                while (((Symbol) elem).getPriority() < ((Symbol) symbols.peek()).getPriority()) {
+                while ( (((Symbol) elem).getPriority() <= ((Symbol) symbols.peek()).getPriority()) && !((ExpressionFragment)symbols.peek()).isBracket() ) {
                     Number a = (Number) numbers.pop();
                     Number b = (Number) numbers.pop();
                     numbers.push(Operator.operate(b, (Operator) symbols.pop(), a));

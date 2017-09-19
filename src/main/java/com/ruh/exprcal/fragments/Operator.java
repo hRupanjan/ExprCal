@@ -64,7 +64,7 @@ public class Operator extends ExpressionFragment implements Symbol {
         double a = x.getNumber();
         double b = y.getNumber();
         
-        System.err.println(x+" "+opt+" "+y);//check it all
+//        System.err.println(x+" "+opt+" "+y);//check it all
         
         double temp;
         switch (opt.getOperator()) {
