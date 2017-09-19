@@ -18,9 +18,9 @@ public class A {
     public static void main(String[] args) {
 
         try {
-            String s = "(2*2/4)";
-            Constant.add("E",4.0);
-            ExpressionRenderer e = new ExpressionRenderer(s, ExpressionRenderer.DEGREE, 4);
+            String s = "sin(PI/2)";
+            Constant.add("X",3);
+            ExpressionRenderer e = new ExpressionRenderer(s, ExpressionRenderer.RADIAN, 4);
             System.out.println(e.getExpression());
             System.out.println(e.render().getResult());
         } catch (Exception e) {
