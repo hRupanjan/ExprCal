@@ -30,6 +30,7 @@ public class Expression extends ExpressionFragment {
     private final int trig_flag, round_scale;
     Multimap<String, ExpressionFragment> fragUniteMap = ArrayListMultimap.create();
     private double result;
+    private boolean solved=false;
 
     public Expression(int pos, String s, int trig_flag, int round_scale) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, s);
@@ -200,6 +201,9 @@ public class Expression extends ExpressionFragment {
     }
 
     public Expression solve() throws BadExpressionFragmentException, BadExpressionException {
+        if (solved)
+            return this;
+        
         TreeMap<Integer, ExpressionFragment> frag_temp = frag;
         int size = frag_temp.firstKey() + frag_temp.size();
         for (int i = frag_temp.firstKey(); i < size; i++) {
@@ -232,6 +236,7 @@ public class Expression extends ExpressionFragment {
             frag_temp.remove(i);
         }
         result = new BigDecimal(((Number) (numbers.pop())).getNumber()).setScale(round_scale, RoundingMode.CEILING).doubleValue();
+        solved=true;
         return this;
     }
 

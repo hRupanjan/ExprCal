@@ -21,7 +21,8 @@ public class Function extends ExpressionFragment {
     private double result;
     private final double degree;
     private final int trig_flag, round_scale;
-    private static final int DEGREE = 0, RADIAN = 1;
+    public static final int DEGREE = 0, RADIAN = 1;
+    private boolean processed=false;
 
     public Function(int pos, String value, int trig_flag, int round_scale) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, value);
@@ -63,6 +64,9 @@ public class Function extends ExpressionFragment {
     }
 
     public Function process() throws BadExpressionException, BadExpressionFragmentException {
+        if (processed)
+            return this;
+        
         Double temp = exp.solve().getResult().getNumber();
         switch (name) {
             case "sin":
@@ -91,6 +95,7 @@ public class Function extends ExpressionFragment {
                 break;
         }
         result = new BigDecimal(temp).setScale(round_scale, RoundingMode.CEILING).doubleValue();
+        processed=true;
         return this;
     }
 
