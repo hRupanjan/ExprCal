@@ -22,7 +22,7 @@ public class ExpressionRenderer {
     public ExpressionRenderer(String s, int trig_flag, int round_scale) throws BadExpressionFragmentException, BadExpressionException {
         this.exp = new Expression(ExpressionFragment.BASIC_POS, s, trig_flag, round_scale);
     }
-
+    
     public Expression getExpression() {
         return exp;
     }
