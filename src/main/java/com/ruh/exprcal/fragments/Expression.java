@@ -269,7 +269,7 @@ public class Expression extends ExpressionFragment {
                     numbers.push(((Function) elem).process().getResult());
                 }
                 else if (elem.isConstant()) {
-                    numbers.push(((Constant) elem).getData());
+                    numbers.push(((Constant) elem).get());
                 }
                 else {
                     numbers.push((Number) elem);

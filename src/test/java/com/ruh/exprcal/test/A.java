@@ -18,8 +18,10 @@ public class A {
     public static void main(String[] args) {
 
         try {
-            String s = "sin(PI/2)";
-            Constant.add("X",3);
+            String s = "pow(2,sin(X))";
+            String s1 = "sin(X)";
+            Constant.add("X",Constant.get("PI"));
+//            System.err.println(Math.pow(2, Math.sin(Math.PI)));
             ExpressionRenderer e = new ExpressionRenderer(s, ExpressionRenderer.RADIAN, 4);
             System.out.println(e.getExpression());
             System.out.println(e.render().getResult());

@@ -14,12 +14,16 @@ public class Constant extends ExpressionFragment{
     private static HashMap<String,Double> cons_pool = new HashMap<>();
     private final String cons_name; 
     private static int trig_flag;
+    
+    static {
+        populateConstantPool();
+    }
 
     public Constant(int pos,String cons,double value,int trig_fl) {
         super(pos, cons.toUpperCase());
         this.cons_name=cons.toUpperCase();
         trig_flag = trig_fl;
-        populateConstantPool();
+//        populateConstantPool();
         convert();
         //if the CONSTANT is not default you can change the value as many times you want, but the last change will persist
         if (isNotDefault(cons_name))
@@ -29,7 +33,7 @@ public class Constant extends ExpressionFragment{
     public Constant(int pos,String cons,int trig_fl) throws BadExpressionFragmentException {
         super(pos, cons);
         trig_flag = trig_fl;
-        populateConstantPool();
+//        populateConstantPool();
         convert();
         if (exists(cons))
             this.cons_name=cons.toUpperCase();
@@ -48,11 +52,18 @@ public class Constant extends ExpressionFragment{
         
     }
     
-    public Number getData() throws BadExpressionFragmentException
+    public Number get() throws BadExpressionFragmentException
     {
         if (exists(cons_name))
             return new Number(BASIC_POS, cons_pool.get(cons_name));
         return new Number(BASIC_POS, 0.0);
+    }
+    
+    public static double get(String cons) throws BadExpressionFragmentException
+    {
+        if (exists(cons))
+            return cons_pool.get(cons);
+        return 0.0;
     }
     
     public static void add(String cons,double value)
