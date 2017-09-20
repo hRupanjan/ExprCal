@@ -18,7 +18,7 @@ public class Function extends ExpressionFragment {
 
     private String name;
     private Queue<Expression> exp = new LinkedList<>();
-    private static final String[] DEFAULT_FUNCTIONS = {"sin", "cosec", "cos", "sec", "tan", "cot", "log", "pow"};
+    private static final String[] DEFAULT_FUNCTIONS = {"sin", "cosec", "cos", "sec", "tan", "cot", "log", "pow", "sqrt", "fact"};
     private static final List<String> FUNCTIONS = Arrays.asList(DEFAULT_FUNCTIONS);
     private double result;
     private final double degree;
@@ -101,6 +101,12 @@ public class Function extends ExpressionFragment {
                     case "log":
                         temp_res = Math.log(temp.poll());
                         break;
+                    case "sqrt":
+                        temp_res = Math.sqrt(temp.poll());
+                        break;
+                    case "fact":
+                        temp_res = factorial(temp.poll().intValue());
+                        break;
                     default:
                         throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
                 }
@@ -132,6 +138,16 @@ public class Function extends ExpressionFragment {
             }
         }
         return false;
+    }
+    
+    private double factorial (int n)
+    {
+        if (n==0)
+            return 1;
+        int temp=1;
+        for (int i=n;i>=1;i--)
+            temp *= i;
+        return temp;
     }
 
     @Override
