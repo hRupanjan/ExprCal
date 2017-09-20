@@ -4,28 +4,41 @@ import com.google.common.math.BigIntegerMath;
 import com.ruh.exprcal.abstractions.ExpressionFragment;
 import com.ruh.exprcal.exceptions.BadExpressionException;
 import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class Function extends ExpressionFragment {
 
     private String name;
     private Queue<Expression> exp = new LinkedList<>();
     private static final String[] DEFAULT_FUNCTIONS = {"sin", "cosec", "cos", "sec", "tan", "cot", "log", "pow", "sqrt", "fact"};
-    private static final List<String> FUNCTIONS = Arrays.asList(DEFAULT_FUNCTIONS);
+    private static HashMap<String,Method> function_pool = new HashMap<>();
+    
     private double result;
     private final double degree;
     private static int trig_flag, round_scale;
     public static final int DEGREE = 0, RADIAN = 1;
     private boolean processed = false;
+    
+    
+    static {
+        try {
+            populateMethodPool();
+        } catch (NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public Function(int pos, String value, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, value);
@@ -42,6 +55,12 @@ public class Function extends ExpressionFragment {
             default:
                 degree = 0.0;
         }
+    }
+    
+    public static void add(String s,Method m)
+    {
+        if (isNotDefault(s))
+            function_pool.put(s, m);
     }
 
     public Number getResult() throws BadExpressionFragmentException {
@@ -68,12 +87,14 @@ public class Function extends ExpressionFragment {
             this.exp.add(new Expression(BASIC_POS, elem, trig_flag, round_scale));
         }
     }
-
+    
     public Function process() throws BadExpressionException, BadExpressionFragmentException {
         if (processed) {
             return this;
         }
-        Double temp_res = 0.0;
+        
+        try{
+        double temp_res = 0.0;
         Queue<Double> temp = new LinkedList<>();
         for (Expression elem : exp) {
             temp.add(elem.solve().getResult().getNumber());
@@ -82,43 +103,35 @@ public class Function extends ExpressionFragment {
             case 1:
                 switch (name) {
                     case "sin":
-                        temp_res = Math.sin(temp.poll() * degree);
-                        break;
                     case "cosec":
-                        temp_res = 1 / Math.sin(temp.poll() * degree);
-                        break;
                     case "cos":
-                        temp_res = Math.cos(temp.poll() * degree);
-                        break;
                     case "sec":
-                        temp_res = 1 / Math.cos(temp.poll() * degree);
-                        break;
                     case "tan":
-                        temp_res = Math.tan(temp.poll() * degree);
-                        break;
                     case "cot":
-                        temp_res = 1 / Math.tan(temp.poll() * degree);
+                        temp_res = (double)function_pool.get(name).invoke(null, temp.poll() * degree);
                         break;
                     case "log":
-                        temp_res = Math.log(temp.poll());
-                        break;
                     case "sqrt":
-                        temp_res = Math.sqrt(temp.poll());
-                        break;
                     case "fact":
-                        temp_res = BigIntegerMath.factorial(temp.poll().intValue()).doubleValue();
+                        temp_res = (double)function_pool.get(name).invoke(null, temp.poll());
                         break;
                     default:
-                        throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
+                        if (exists(name) && function_pool.get(name).getParameterCount()==temp.size())
+                            temp_res = (double)function_pool.get(name).invoke(null, temp.poll());
+                        else
+                            throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
                 }
                 break;
             case 2:
                 switch (name) {
                     case "pow":
-                        temp_res = Math.pow(temp.poll(), temp.poll());
+                        temp_res = (double)function_pool.get(name).invoke(null, temp.poll(), temp.poll());
                         break;
                     default:
-                        throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
+                        if (exists(name) && function_pool.get(name).getParameterCount()==temp.size())
+                            temp_res = (double)function_pool.get(name).invoke(null, temp.poll(), temp.poll());
+                        else
+                            throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
                 }
                 break;
             default:
@@ -127,18 +140,49 @@ public class Function extends ExpressionFragment {
 
         result = new BigDecimal(temp_res).setScale(round_scale, RoundingMode.CEILING).doubleValue();
         processed = true;
+        }
+        catch(IllegalAccessException| IllegalArgumentException| InvocationTargetException e)
+        {
+            throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
+        }
         return this;
+    }
+    
+    private static boolean isNotDefault(String s)
+    {
+        for (String elem:DEFAULT_FUNCTIONS)
+            return !(elem.equals(s));
+        return true;
     }
 
     public static boolean exists(String s) {
-
-        for (String function : FUNCTIONS) {
-
-            if (s.equalsIgnoreCase(function)) {
-                return true;
+        return function_pool.containsKey(s);
+    }
+    
+    private static void populateMethodPool() throws NoSuchMethodException
+    {
+        for (String elem:DEFAULT_FUNCTIONS)
+        {
+            switch(elem)
+            {
+                case "sin":
+                case "cos":
+                case "tan":
+                case "log":
+                case "sqrt":
+                    function_pool.put(elem, Math.class.getDeclaredMethod(elem, double.class));
+                    break;
+                case "cosec":
+                case "sec":
+                case "cot":
+                case "fact":
+                    function_pool.put(elem, FunctionWrapper.class.getDeclaredMethod(elem, double.class));
+                    break;
+                case "pow":
+                    function_pool.put(elem, Math.class.getDeclaredMethod(elem, double.class, double.class));
+                    break;
             }
         }
-        return false;
     }
 
     @Override
@@ -174,6 +218,26 @@ public class Function extends ExpressionFragment {
     @Override
     public boolean isConstant() {
         return false;
+    }
+    
+    private static class FunctionWrapper
+    {
+        public static double cosec(double a)
+        {
+            return 1/Math.sin(a);
+        }
+        public static double sec(double a)
+        {
+            return 1/Math.cos(a);
+        }
+        public static double cot(double a)
+        {
+            return 1/Math.tan(a);
+        }
+        public static double fact(double a)
+        {
+            return BigIntegerMath.factorial((int)a).doubleValue();
+        }
     }
 
 }

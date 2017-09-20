@@ -5,8 +5,10 @@ import com.ruh.exprcal.abstractions.Symbol;
 import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class Bracket extends ExpressionFragment implements Symbol {
 

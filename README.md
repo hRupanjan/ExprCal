@@ -9,4 +9,8 @@ double result = new ExpressionRenderer(s, ExpressionRenderer.DEGREE, round_up_sc
 Constants follow Uppercase paradigm. So always declare Constants in UpperCase to avoid error.
 Eg:- Constant.add("X",Constant.get("PI")); Constant.add("Y",3.0);
 
+New Feature:-
+Functions follow Lowercase paradigm. So always declare Functions in Lowercase to avoid error.
+Eg:- Function.add("si", Math.class.getDeclaredMethod("sin", double.class));
+
 Documentations will be released soon.

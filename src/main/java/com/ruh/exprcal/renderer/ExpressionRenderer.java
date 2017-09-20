@@ -7,8 +7,10 @@ import com.ruh.exprcal.fragments.Expression;
 import com.ruh.exprcal.fragments.Function;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class ExpressionRenderer {
 

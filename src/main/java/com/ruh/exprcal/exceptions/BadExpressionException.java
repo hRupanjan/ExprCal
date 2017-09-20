@@ -1,8 +1,10 @@
 package com.ruh.exprcal.exceptions;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class BadExpressionException extends Exception {
 

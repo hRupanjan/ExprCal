@@ -6,8 +6,10 @@ import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
 import java.util.regex.Pattern;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class Operator extends ExpressionFragment implements Symbol {
 

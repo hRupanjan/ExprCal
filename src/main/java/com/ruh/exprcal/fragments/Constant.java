@@ -5,8 +5,10 @@ import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
 import java.util.HashMap;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class Constant extends ExpressionFragment{
     private static final String DEFAULT_CONS[]={"PI","E"};

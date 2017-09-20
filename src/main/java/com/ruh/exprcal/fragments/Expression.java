@@ -18,8 +18,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public class Expression extends ExpressionFragment {
 
@@ -28,7 +30,7 @@ public class Expression extends ExpressionFragment {
     private final Stack<ExpressionFragment> numbers = new Stack<>();
     private TreeMap<Integer, ExpressionFragment> frag = new TreeMap<Integer, ExpressionFragment>();
     private static int trig_flag, round_scale;
-    Multimap<String, ExpressionFragment> fragUniteMap = ArrayListMultimap.create();
+    private Multimap<String, ExpressionFragment> fragUniteMap = ArrayListMultimap.create();
     private double result;
     private boolean solved=false;
 

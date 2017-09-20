@@ -3,8 +3,10 @@ package com.ruh.exprcal.abstractions;
 import com.ruh.exprcal.fragments.Expression;
 
 /**
- *
- * @author Rupanjan Hari
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
  */
 public abstract class ExpressionFragment implements java.io.Serializable {
 
