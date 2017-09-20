@@ -1,5 +1,6 @@
 package com.ruh.exprcal.fragments;
 
+import com.google.common.math.BigIntegerMath;
 import com.ruh.exprcal.abstractions.ExpressionFragment;
 import com.ruh.exprcal.exceptions.BadExpressionException;
 import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
@@ -105,7 +106,7 @@ public class Function extends ExpressionFragment {
                         temp_res = Math.sqrt(temp.poll());
                         break;
                     case "fact":
-                        temp_res = factorial(temp.poll().intValue());
+                        temp_res = BigIntegerMath.factorial(temp.poll().intValue()).doubleValue();
                         break;
                     default:
                         throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
@@ -138,16 +139,6 @@ public class Function extends ExpressionFragment {
             }
         }
         return false;
-    }
-    
-    private double factorial (int n)
-    {
-        if (n==0)
-            return 1;
-        int temp=1;
-        for (int i=n;i>=1;i--)
-            temp *= i;
-        return temp;
     }
 
     @Override

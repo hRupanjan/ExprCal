@@ -18,8 +18,8 @@ public class A {
     public static void main(String[] args) {
 
         try {
-            String s = "X^2+Y^2+fact(3)";
-            String s1 = "fact(3)";
+            String s = "X^2+Y^2+fact(5)";
+            String s1 = "fact(0)";
             Constant.add("X",3);
             Constant.add("Y",4);
 //            System.err.println(Math.pow(2, Math.sin(Math.PI)));
