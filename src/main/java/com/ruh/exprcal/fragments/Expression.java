@@ -245,7 +245,7 @@ public class Expression extends ExpressionFragment {
         if (solved)
             return this;
         
-        TreeMap<Integer, ExpressionFragment> frag_temp = frag;
+        SortedMap<Integer, ExpressionFragment> frag_temp = frag;
         int size = frag_temp.firstKey() + frag_temp.size();
         for (int i = frag_temp.firstKey(); i < size; i++) {
             ExpressionFragment elem = frag_temp.get(i);
@@ -277,8 +277,6 @@ public class Expression extends ExpressionFragment {
                     numbers.push((Number) elem);
                 }
             }
-
-            frag_temp.remove(i);
         }
         result = new BigDecimal(((Number) (numbers.pop())).getNumber()).setScale(round_scale, RoundingMode.CEILING).doubleValue();
         solved=true;

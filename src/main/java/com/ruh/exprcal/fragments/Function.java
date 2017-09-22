@@ -22,7 +22,7 @@ public class Function extends ExpressionFragment {
 
     private String name;
     private Queue<Expression> exp = new LinkedList<>();
-    private static final String[] DEFAULT_FUNCTIONS = {"sin", "cosec", "cos", "sec", "tan", "cot", "log", "pow", "sqrt", "fact"};
+    private static final String[] DEFAULT_FUNCTIONS = {"sin", "cosec", "cos", "sec", "tan", "cot", "log", "ln", "pow", "sqrt", "cbrt", "fact"};
     private static HashMap<String,Method> function_pool = new HashMap<>();
     
     private double result;
@@ -111,6 +111,7 @@ public class Function extends ExpressionFragment {
                         temp_res = (double)function_pool.get(name).invoke(null, temp.poll() * degree);
                         break;
                     case "log":
+                    case "ln":
                     case "sqrt":
                     case "fact":
                         temp_res = (double)function_pool.get(name).invoke(null, temp.poll());
@@ -168,13 +169,15 @@ public class Function extends ExpressionFragment {
                 case "sin":
                 case "cos":
                 case "tan":
-                case "log":
                 case "sqrt":
+                case "cbrt":
                     function_pool.put(elem, Math.class.getDeclaredMethod(elem, double.class));
                     break;
                 case "cosec":
                 case "sec":
                 case "cot":
+                case "ln":
+                case "log":
                 case "fact":
                     function_pool.put(elem, FunctionWrapper.class.getDeclaredMethod(elem, double.class));
                     break;
@@ -233,6 +236,14 @@ public class Function extends ExpressionFragment {
         public static double cot(double a)
         {
             return 1/Math.tan(a);
+        }
+        public static double ln(double a)
+        {
+            return Math.log(a);
+        }
+        public static double log(double a)
+        {
+            return Math.log10(a);
         }
         public static double fact(double a)
         {
