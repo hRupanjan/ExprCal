@@ -1,0 +1,10 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix} -----------------------------------------------------------------------------
+${licensePrefix} ExprCal (v1.0-SNAPSHOT)
+${licensePrefix} Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+${licensePrefix} -----------------------------------------------------------------------------
+<#if licenseLast??>
+${licenseLast}
+</#if>

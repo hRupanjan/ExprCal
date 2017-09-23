@@ -16,9 +16,8 @@ Eg:- Function.add("si", Math.class.getDeclaredMethod("sin", double.class));
 New Feature:-
 New method chaining for some functions.
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
-double res = e.add("X=9","X=-sqrt(X)","Y=4").add("abs", Math.class.getDeclaredMethod("abs", double.class))
+double res = e.add("U","X=U","X=-sqrt(X)","Y=4").add("abs", Math.class.getDeclaredMethod("abs", double.class))
                 .setExpression(s).render().getResult().getNumber();
 
 Warning:
 Functions and Constants must be declared before setting the expression.
-Documentations will be released soon.

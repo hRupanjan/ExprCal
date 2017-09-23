@@ -1,11 +1,11 @@
-package com.ruh.exprcal.exceptions;
-
 /**
  * -----------------------------------------------------------------------------
  * ExprCal (v1.0-SNAPSHOT)
  * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
  * -----------------------------------------------------------------------------
  */
+package com.ruh.exprcal.exceptions;
+
 public class IllegalInitialisationException extends Exception {
 
     /**
@@ -19,7 +19,6 @@ public class IllegalInitialisationException extends Exception {
     /**
      * Constructs an instance of <code>IllegalInitialisationException</code>
      * with the specified detail message.
-     *
      * @param msg the detail message.
      */
     public IllegalInitialisationException(String msg) {

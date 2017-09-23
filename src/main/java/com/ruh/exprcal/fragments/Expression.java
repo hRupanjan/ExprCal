@@ -1,3 +1,9 @@
+/**
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
+ */
 package com.ruh.exprcal.fragments;
 
 import java.util.ArrayList;
@@ -18,22 +24,51 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * -----------------------------------------------------------------------------
- * ExprCal (v1.0-SNAPSHOT)
- * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
- * -----------------------------------------------------------------------------
+ * A fragment of 'Expression' type
  */
 public class Expression extends ExpressionFragment {
-
-//    private final String EXPR_PATTERN="[(]?([+-]?([0-9]*[.])?[0-9]+)([\\+\\-\\*\\/\\^]([+-]?([0-9]*[.])?[0-9]+))*[)]?"; 
-    private final Stack<Symbol> symbols = new Stack<>();
-    private final Stack<ExpressionFragment> numbers = new Stack<>();
+    /**
+     * Stack to hold the symbol list of the expression during execution
+     */
+    private Stack<Symbol> symbols = new Stack<>();
+    /**
+     * Stack for holding the numbers,constants,functions & expressions
+     */
+    private Stack<ExpressionFragment> numbers = new Stack<>();
+    /**
+     * Holds the whole fragment map
+     */
     private TreeMap<Integer, ExpressionFragment> frag = new TreeMap<Integer, ExpressionFragment>();
-    private static int trig_flag, round_scale;
-    private Multimap<String, ExpressionFragment> fragUniteMap = ArrayListMultimap.create();
+    /**
+     * Holds the distributed fragment map
+     */
+    private Multimap<String, ExpressionFragment> fragDistMap = ArrayListMultimap.create();
+    /**
+     * Holds the final result after execution
+     */
     private double result;
+    /**
+     * The trigonometric flag
+     */
+    private static int trig_flag;
+    /**
+     * The round up scale
+     */
+    private static int round_scale;
+    /**
+     * The solution available flag for caching
+     */
     private boolean solved=false;
 
+    /**
+     * The constructor that makes a Expression fragment.
+     * @param pos the position where the expression will exist
+     * @param s the expression in String format
+     * @param trig_fl the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
+     * @param round_sc the rounding up scale (set:- Any integer no. within 0-9)
+     * @throws BadExpressionFragmentException if expression fragments are unsupported
+     * @throws BadExpressionException if expression can't be parsed
+     */
     public Expression(int pos, String s, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, s);
         trig_flag = trig_fl;
@@ -42,20 +77,49 @@ public class Expression extends ExpressionFragment {
         sample();
     }
 
+    /**
+     * Return a list of all the Fragments of {@code type}
+     * @param type the type of fragments 
+     * <ul>
+     * <li>ExpressionFragment.FRAG_NUM = "NUMBER"</li>
+     * <li>ExpressionFragment.FRAG_OPT = "OPERATOR"</li>
+     * <li>ExpressionFragment.FRAG_SIGN = "SIGN"</li>
+     * <li>ExpressionFragment.FRAG_BRACK = "BRACKET"</li>
+     * <li>ExpressionFragment.FRAG_EXPR = "EXPRESSION"</li>
+     * <li>ExpressionFragment.FRAG_FUNC = "FUNCTION"</li>
+     * <li>ExpressionFragment.FRAG_CONS = "CONSTANT"</li>
+     * </ul>
+     * @return the list containing the fragments
+     */
     public List<ExpressionFragment> get(String type) {
-        List<ExpressionFragment> temp = new ArrayList<>(fragUniteMap.get(type));
+        List<ExpressionFragment> temp = new ArrayList<>(fragDistMap.get(type));
         return temp;
     }
 
+    /**
+     * Returns a reference to the fragment map
+     * @return the reference to the fragment map
+     */
     public SortedMap<Integer, ExpressionFragment> getFragmentMap() {
         return frag;
     }
 
+    /**
+     * Returns the result of the expression in com.ruh.exprcal.fragments.Number format
+     * @return the result in com.ruh.exprcal.fragments.Number format
+     * @throws BadExpressionFragmentException if number format is not supported
+     */
     public Number getResult() throws BadExpressionFragmentException {
         return new Number(BASIC_POS, result);
     }
 
-    private void formParseMap(String s) throws BadExpressionFragmentException, BadExpressionException/*, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException */ {
+    /**
+     * Forms the parse map for the expression
+     * @param s the expression in {@code String} format
+     * @throws BadExpressionFragmentException if paradigm is violated
+     * @throws BadExpressionException if expression isn't supported
+     */
+    private void formParseMap(String s) throws BadExpressionFragmentException, BadExpressionException {
         s = '(' + s + ')';
         String temp = "";
         for (int i = 0; i < s.length(); i++) {
@@ -67,7 +131,7 @@ public class Expression extends ExpressionFragment {
                     for (String e : extractNumberBlocks(temp)) {
                         int id = (frag.isEmpty()) ? 0 : (frag.size());
                         frag.put(id, new Number(id, e));
-                        fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                        fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 //                        System.out.println(id + " Num " + frag.get(id));
                     }
 
@@ -84,17 +148,17 @@ public class Expression extends ExpressionFragment {
                 int id = (frag.isEmpty()) ? 0 : (frag.size());
 
                     frag.put(id, (ExpressionFragment) new Constant(id,concat,trig_flag));
-                    fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                    fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
                     i=k-1;
 //                    System.out.println(id + " Constant " + frag.get(id));
             }
-            else if (Character.isAlphabetic(ch)) {
+            else if (Character.isLowerCase(ch)) {
                 if (!"".equals(temp)) {
 
                     for (String e : extractNumberBlocks(temp)) {
                         int id = (frag.isEmpty()) ? 0 : (frag.size());
                         frag.put(id, new Number(id, e));
-                        fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                        fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 //                        System.out.println(id + " Num " + frag.get(id));
                     }
 
@@ -131,7 +195,7 @@ public class Expression extends ExpressionFragment {
                     int id = (frag.isEmpty()) ? 0 : (frag.size());
 
                     frag.put(id, (ExpressionFragment) new Function(id, s.substring(i, j + 1), trig_flag, round_scale)/*FUNC_TYPE.cast(new ExtendedFunction(id,s.substring(i,j+1)))*/);
-                    fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                    fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 
 //                    System.out.println(id + " Function " + frag.get(id));
                     i = j;
@@ -147,7 +211,7 @@ public class Expression extends ExpressionFragment {
                     for (String e : extractNumberBlocks(temp)) {
                         int id = (frag.isEmpty()) ? 0 : (frag.size());
                         frag.put(id, new Number(id, e));
-                        fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                        fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 //                        System.out.println(id + " Num " + frag.get(id));
                     }
 
@@ -161,19 +225,19 @@ public class Expression extends ExpressionFragment {
                     switch (type) {
                         case Operator.BINARY:
                             frag.put(id, new Operator(id, ch));
-                            fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                            fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 //                            System.out.println(id + " Opt " + frag.get(id));
                             break;
                         case Operator.DUAL:
                             frag.put(id, new Sign(id, ch));
-                            fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                            fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 //                            System.out.println(id + " Sign " + frag.get(id));
                             break;
                     }
                 } else if (Bracket.exists(ch)) {
                     id = (frag.isEmpty()) ? 0 : (frag.size());
                     frag.put(id, new Bracket(id, ch));
-                    fragUniteMap.put(frag.get(id).getFragmentType(), frag.get(id));
+                    fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 //                    System.out.println(id + " Bracket " + frag.get(id));
                 } else {
 
@@ -185,20 +249,34 @@ public class Expression extends ExpressionFragment {
         }
     }
 
-    private Expression formFragUniteMap() {
-        fragUniteMap.clear();
+    /**
+     * Form a distributed fragment map
+     * @return the reference to self
+     */
+    private Expression formFragDistributedMap() {
+        fragDistMap.clear();
         for (Map.Entry<Integer, ExpressionFragment> node : frag.entrySet()) {
             ExpressionFragment elem = node.getValue();
-            fragUniteMap.put(elem.getFragmentType(), elem);
+            fragDistMap.put(elem.getFragmentType(), elem);
         }
         return this;
     }
 
+    /**
+     * Form a fragment parse map
+     * @param map a fragment map
+     * @return the reference to self
+     */
     private Expression formParseMap(SortedMap<Integer, ExpressionFragment> map) {
         this.frag = (TreeMap<Integer, ExpressionFragment>) map;
         return this;
     }
 
+    /**
+     * Samples the expression fragment map to follow a standard form
+     * @throws BadExpressionException if the expression doesn't follow standard expression paradigms
+     * @throws BadExpressionFragmentException if the fragments doesn't follow standard paradigms
+     */
     private void sample() throws BadExpressionException, BadExpressionFragmentException {
         if (!isParanthasized()) {
             throw new BadExpressionException("Not Paranthasized", getValue());
@@ -237,10 +315,15 @@ public class Expression extends ExpressionFragment {
             }
         }
         formParseMap(map_temp);
-        formFragUniteMap();
-
+        formFragDistributedMap();
     }
 
+    /**
+     * Solves the expression and returns the reference to self
+     * @return the the reference to self
+     * @throws BadExpressionException if the expression doesn't follow standard expression paradigms
+     * @throws BadExpressionFragmentException if the fragments doesn't follow standard paradigms
+     */
     public Expression solve() throws BadExpressionFragmentException, BadExpressionException {
         if (solved)
             return this;
@@ -283,6 +366,12 @@ public class Expression extends ExpressionFragment {
         return this;
     }
 
+    /**<pre>
+     * Extract Number blocks from a complex number string 
+     * viz:- 1.2223.679.4713.3 is evaluated as 1.2223 * .679 * .4713 * .3</pre>
+     * @param s the number block in string format
+     * @return the list that has the evaluated numbers
+     */
     private List<String> extractNumberBlocks(String s) {
         List<String> ob = new ArrayList<>();
         String temp[] = s.split("[.]");
@@ -301,6 +390,10 @@ public class Expression extends ExpressionFragment {
         return ob;
     }
 
+    /**
+     * Extract Multiplication points from the fragment map
+     * @return a queue of every multiplication point in the map
+     */
     private Queue<Integer> extractMultiplicationPoints() {
         Queue<Integer> temp = new LinkedList<>();
         for (int i = 0; i < frag.lastKey() - 1; i++) {
@@ -316,10 +409,14 @@ public class Expression extends ExpressionFragment {
         return temp;
     }
 
+    /**
+     * Extract Sign blocks from the fragment map
+     * @return a list of Sign blocks
+     */
     private List<SignBlock> extractSignBlocks() {
         List<SignBlock> ob = new ArrayList<>();
         int pre_hold;
-        for (ExpressionFragment elem : this.fragUniteMap.get(ExpressionFragment.FRAG_SIGN)) {
+        for (ExpressionFragment elem : this.fragDistMap.get(ExpressionFragment.FRAG_SIGN)) {
             pre_hold = elem.getPos();
             if (!ob.isEmpty()) {
                 if (elem.getPos() <= ob.get(ob.size() - 1).end) {
@@ -336,6 +433,11 @@ public class Expression extends ExpressionFragment {
         return ob;
     }
 
+    /**
+     * Returns a list of two fragment maps split from the original
+     * @param p the point from where it's split
+     * @return a list of two fragment maps split from the original
+     */
     private List<SortedMap<Integer, ExpressionFragment>> splitExp(int p) {
         List<SortedMap<Integer, ExpressionFragment>> parts = new ArrayList<>();
         parts.add(frag.subMap(0, p));
@@ -343,6 +445,12 @@ public class Expression extends ExpressionFragment {
         return parts;
     }
 
+    /**
+     * Returns a list of three fragment maps split from the original
+     * @param p the point from where it's split
+     * @param q the second point from where it's split
+     * @return a list of three fragment maps split from the original
+     */
     private List<SortedMap<Integer, ExpressionFragment>> splitExp(int p, int q) {
         List<SortedMap<Integer, ExpressionFragment>> parts = new ArrayList<>();
         parts.add(frag.subMap(0, p));
@@ -351,10 +459,15 @@ public class Expression extends ExpressionFragment {
         return parts;
     }
 
+    /**
+     * Returns a Map of merged smaller maps
+     * @param parts the list of smaller maps
+     * @return the map of merged smaller maps
+     */
     private SortedMap<Integer, ExpressionFragment> mergeExp(List<SortedMap<Integer, ExpressionFragment>> parts) {
         TreeMap<Integer, ExpressionFragment> map = new TreeMap<>();
         int j = 0;
-        fragUniteMap.clear();
+        fragDistMap.clear();
         for (int i = 0; i < parts.size(); i++) {
             for (Map.Entry<Integer, ExpressionFragment> elem : parts.get(i).entrySet()) {
                 map.put(j++, elem.getValue().setPos(j));
@@ -363,9 +476,13 @@ public class Expression extends ExpressionFragment {
         return map;
     }
 
+    /**
+     * Checks whether the expression is well balanced
+     * @return {@code true} if expression is well closed, otherwise {@code false}
+     */
     public boolean isParanthasized() {
         int param = 0;
-        for (ExpressionFragment elem : this.fragUniteMap.get(ExpressionFragment.FRAG_BRACK)) {
+        for (ExpressionFragment elem : this.fragDistMap.get(ExpressionFragment.FRAG_BRACK)) {
             if (((Bracket) elem).isOpen()) {
                 param++;
             } else {
@@ -422,8 +539,16 @@ public class Expression extends ExpressionFragment {
         return false;
     }
 
+    /**
+     * Holds the left and right parameters of a sign block
+     */
     private class SignBlock implements java.io.Serializable {
-
+        /**
+         * <ul>
+         * <li>start - left of the sign block</li>
+         * <li>end - right of the sign block</li>
+         * </ul>
+         */
         int start, end;
 
         public SignBlock(int p, int q) {

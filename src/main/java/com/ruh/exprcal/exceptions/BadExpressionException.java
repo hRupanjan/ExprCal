@@ -1,11 +1,11 @@
-package com.ruh.exprcal.exceptions;
-
 /**
  * -----------------------------------------------------------------------------
  * ExprCal (v1.0-SNAPSHOT)
  * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
  * -----------------------------------------------------------------------------
  */
+package com.ruh.exprcal.exceptions;
+
 public class BadExpressionException extends Exception {
 
     /**
@@ -19,7 +19,6 @@ public class BadExpressionException extends Exception {
     /**
      * Constructs an instance of <code>BadExpressionException</code> with the
      * specified detail message with the expression.
-     *
      * @param msg the detail message.
      * @param exp the Expression
      */

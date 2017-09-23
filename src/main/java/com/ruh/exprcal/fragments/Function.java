@@ -1,9 +1,16 @@
+/**
+ * -----------------------------------------------------------------------------
+ * ExprCal (v1.0-SNAPSHOT)
+ * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
+ * -----------------------------------------------------------------------------
+ */
 package com.ruh.exprcal.fragments;
 
 import com.google.common.math.BigIntegerMath;
 import com.ruh.exprcal.abstractions.ExpressionFragment;
 import com.ruh.exprcal.exceptions.BadExpressionException;
 import com.ruh.exprcal.exceptions.BadExpressionFragmentException;
+import com.ruh.exprcal.exceptions.IllegalInitialisationException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -13,25 +20,53 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * -----------------------------------------------------------------------------
- * ExprCal (v1.0-SNAPSHOT)
- * Licensed under MIT (https://github.com/hRupanjan/ExprCal/blob/master/LICENSE)
- * -----------------------------------------------------------------------------
+ * A fragment of 'Function' type
  */
 public class Function extends ExpressionFragment {
-
+    /**
+     * The pattern to recognize a Function
+     */
+    private static final String FUNCTION_PATTERN = "[a-z]+";
+    /**
+     * Stores the name of the function
+     */
     private String name;
+    /**
+     * Stores a queue of expressions accepted in the function
+     */
     private Queue<Expression> exp = new LinkedList<>();
+    /**
+     * Stores the name of default functions in the array
+     */
     private static final String[] DEFAULT_FUNCTIONS = {"sin", "cosec", "cos", "sec", "tan", "cot", "log", "ln", "pow", "sqrt", "cbrt", "fact"};
+    /**
+     * Holds all the Functions in the pool
+     */
     private static HashMap<String,Method> function_pool = new HashMap<>();
-    
+    /**
+     * Holds the final result after execution
+     */
     private double result;
+    /**
+     * The degree multiplicand
+     */
     private final double degree;
+    /**
+     * The trigonometric flag & round up scale
+     */
     private static int trig_flag, round_scale;
+    /**
+     * The DEGREE and RADIAN statics to control the result
+     */
     public static final int DEGREE = 0, RADIAN = 1;
+    /**
+     * The solution available flag for caching
+     */
     private boolean processed = false;
     
-    
+    /**
+     * The {@code static} block that populates the Function Pool
+     */
     static {
         try {
             populateMethodPool();
@@ -40,6 +75,15 @@ public class Function extends ExpressionFragment {
         }
     }
 
+    /**
+     * The constructor that makes a Function fragment.
+     * @param pos the position where the expression will exist
+     * @param value the function in String format
+     * @param trig_fl the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
+     * @param round_sc the rounding up scale (set:- Any integer no. within 0-9)
+     * @throws BadExpressionFragmentException if expression fragments are unsupported
+     * @throws BadExpressionException if function or expression can't be parsed
+     */
     public Function(int pos, String value, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, value);
         trig_flag = trig_fl;
@@ -57,16 +101,42 @@ public class Function extends ExpressionFragment {
         }
     }
     
-    public static void add(String s,Method m)
+    /**
+     * Adds the declared function to the Function Pool
+     * <br>How to add the method:-
+     * <pre>
+     * if Math.abs(double a) is the method that is to be added to the pool then do it like
+     * Eg:- {@code object.add("absolute", Math.class.getDeclaredMethod("abs", double.class));}
+     * </pre>
+     * @param s the name by which the method will be known in the expression
+     * @param m the {@code static} method that will be invoked
+     * @throws IllegalInitialisationException if declaration violates the paradigm
+     */
+    public static void add(String s,Method m) throws IllegalInitialisationException
     {
-        if (isNotDefault(s))
-            function_pool.put(s, m);
+        if (isNotDefault(s)){
+            if (s.matches(FUNCTION_PATTERN))
+                function_pool.put(s, m);
+            else
+                throw new IllegalInitialisationException();
+        }
     }
 
+    /**
+     * Returns the result of the function in com.ruh.exprcal.fragments.Number format
+     * @return the result in com.ruh.exprcal.fragments.Number format
+     * @throws BadExpressionFragmentException if number format is not supported
+     */
     public Number getResult() throws BadExpressionFragmentException {
         return new Number(BASIC_POS, result);
     }
 
+    /**
+     * Forms the function with name and method
+     * @param s the entire function in {@code String} format
+     * @throws BadExpressionFragmentException if function doesn't exist in the pool
+     * @throws BadExpressionException if expression can't be parsed
+     */
     private void formFunction(String s) throws BadExpressionFragmentException, BadExpressionException {
         String temp = "";
         int i;
@@ -88,6 +158,12 @@ public class Function extends ExpressionFragment {
         }
     }
     
+    /**
+     * Processes the function and returns the reference to self
+     * @return the the reference to self
+     * @throws BadExpressionException if the function doesn't follow standard expression paradigms
+     * @throws BadExpressionFragmentException if the fragments doesn't follow standard paradigms
+     */
     public Function process() throws BadExpressionException, BadExpressionFragmentException {
         if (processed) {
             return this;
@@ -149,6 +225,11 @@ public class Function extends ExpressionFragment {
         return this;
     }
     
+    /**
+     * Checks if a function is default
+     * @param cons the function to be checked
+     * @return {@code false} if the function is DEFAUALT, otherwise {@code true}
+     */
     private static boolean isNotDefault(String s)
     {
         for (String elem:DEFAULT_FUNCTIONS)
@@ -156,10 +237,19 @@ public class Function extends ExpressionFragment {
         return true;
     }
 
+    /**
+     * Checks whether a function exists in the pool
+     * @param s the function name to be checked
+     * @return {@code true} if the function exists in the pool, otherwise {@code false}
+     */
     public static boolean exists(String s) {
         return function_pool.containsKey(s);
     }
     
+    /**
+     * Populates function pool when the class loads
+     * @throws NoSuchMethodException if Method passed isn't found
+     */
     private static void populateMethodPool() throws NoSuchMethodException
     {
         for (String elem:DEFAULT_FUNCTIONS)
@@ -223,6 +313,9 @@ public class Function extends ExpressionFragment {
         return false;
     }
     
+    /**
+     * The function wrapper class for functions with unsupported names
+     */
     private static class FunctionWrapper
     {
         public static double cosec(double a)
