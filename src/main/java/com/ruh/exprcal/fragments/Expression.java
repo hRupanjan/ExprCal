@@ -50,11 +50,11 @@ public class Expression extends ExpressionFragment {
     /**
      * The trigonometric flag
      */
-    private static int trig_flag;
+    private static int trigFlag;
     /**
      * The round up scale
      */
-    private static int round_scale;
+    private static int roundScale;
     /**
      * The solution available flag for caching
      */
@@ -64,15 +64,15 @@ public class Expression extends ExpressionFragment {
      * The constructor that makes a Expression fragment.
      * @param pos the position where the expression will exist
      * @param s the expression in String format
-     * @param trig_fl the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
-     * @param round_sc the rounding up scale (set:- Any integer no. within 0-9)
+     * @param trigFl the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
+     * @param roundSc the rounding up scale (set:- Any integer no. within 0-9)
      * @throws BadExpressionFragmentException if expression fragments are unsupported
      * @throws BadExpressionException if expression can't be parsed
      */
-    public Expression(int pos, String s, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
+    public Expression(int pos, String s, int trigFl, int roundSc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, s);
-        trig_flag = trig_fl;
-        round_scale = round_sc;
+        trigFlag = trigFl;
+        roundScale = roundSc;
         formParseMap(trimSpaces(s));
         sample();
     }
@@ -163,7 +163,7 @@ public class Expression extends ExpressionFragment {
                 }
                 int id = (frag.isEmpty()) ? 0 : (frag.size());
 
-                    frag.put(id, (ExpressionFragment) new Constant(id,concat,trig_flag));
+                    frag.put(id, (ExpressionFragment) new Constant(id,concat,trigFlag));
                     fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
                     i=k-1;
 //                    System.out.println(id + " Constant " + frag.get(id));
@@ -210,7 +210,7 @@ public class Expression extends ExpressionFragment {
                 if (param == 0) {
                     int id = (frag.isEmpty()) ? 0 : (frag.size());
 
-                    frag.put(id, (ExpressionFragment) new Function(id, s.substring(i, j + 1), trig_flag, round_scale)/*FUNC_TYPE.cast(new ExtendedFunction(id,s.substring(i,j+1)))*/);
+                    frag.put(id, (ExpressionFragment) new Function(id, s.substring(i, j + 1), trigFlag, roundScale)/*FUNC_TYPE.cast(new ExtendedFunction(id,s.substring(i,j+1)))*/);
                     fragDistMap.put(frag.get(id).getFragmentType(), frag.get(id));
 
 //                    System.out.println(id + " Function " + frag.get(id));
@@ -377,7 +377,7 @@ public class Expression extends ExpressionFragment {
                 }
             }
         }
-        result = new BigDecimal(((Number) (numbers.pop())).getNumber()).setScale(round_scale, RoundingMode.CEILING).doubleValue();
+        result = new BigDecimal(((Number) (numbers.pop())).getNumber()).setScale(roundScale, RoundingMode.CEILING).doubleValue();
         solved=true;
         return this;
     }

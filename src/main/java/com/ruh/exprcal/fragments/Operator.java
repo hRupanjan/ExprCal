@@ -33,7 +33,7 @@ public class Operator extends ExpressionFragment implements Symbol {
     /**
      * Stores the type of the operator
      */
-    private int opt_type;
+    private int optType;
 
     /**
      * The constructor that makes a Operator fragment.
@@ -46,10 +46,10 @@ public class Operator extends ExpressionFragment implements Symbol {
         if (exists(val)) {
             this.opt = val;
             if (isDual(val)) {
-                this.opt_type = Operator.DUAL;
+                this.optType = Operator.DUAL;
             }
             if (isBinary(val)) {
-                this.opt_type = Operator.BINARY;
+                this.optType = Operator.BINARY;
             }
         } else {
             throw new BadExpressionFragmentException("Not an Operator", "" + val);
@@ -66,10 +66,10 @@ public class Operator extends ExpressionFragment implements Symbol {
         if (exists(val)) {
             this.opt = val;
             if (isDual(val)) {
-                this.opt_type = Operator.DUAL;
+                this.optType = Operator.DUAL;
             }
             if (isBinary(val)) {
-                this.opt_type = Operator.BINARY;
+                this.optType = Operator.BINARY;
             }
         } else {
             throw new BadExpressionFragmentException("Not an Operator", "" + val);
@@ -245,7 +245,7 @@ public class Operator extends ExpressionFragment implements Symbol {
 
     @Override
     public int getType() {
-        return opt_type;
+        return optType;
     }
 
     @Override

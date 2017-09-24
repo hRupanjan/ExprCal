@@ -28,11 +28,11 @@ public class ExpressionRenderer {
     /**
      * Stores the flag to set the DEGREE statics
      */
-    private final int trig_flag;
+    private final int trigFlag;
     /**
      * Stores the rounding factor for the resultant
      */
-    private final int round_scale;
+    private final int roundScale;
     /**
      * Stores the result after calculation
      */
@@ -45,25 +45,25 @@ public class ExpressionRenderer {
     /**
      * Constructor to initialize the object for operation. (Method chaining isn't possible with Function and Constant addition)
      * @param ex the expression in String format
-     * @param trig_flag the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
-     * @param round_scale the rounding up scale (set:- Any integer no. within 0-9)
+     * @param trigFlag the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
+     * @param roundScale the rounding up scale (set:- Any integer no. within 0-9)
      * @throws BadExpressionFragmentException if any fragment in the expression is not recognizable
      * @throws BadExpressionException if the expression is not supported
      */
-    public ExpressionRenderer(String ex, int trig_flag, int round_scale) throws BadExpressionFragmentException, BadExpressionException {
-        this.trig_flag = trig_flag;
-        this.round_scale = round_scale;
-        this.exp = new Expression(ExpressionFragment.BASIC_POS, ex, trig_flag, round_scale);
+    public ExpressionRenderer(String ex, int trigFlag, int roundScale) throws BadExpressionFragmentException, BadExpressionException {
+        this.trigFlag = trigFlag;
+        this.roundScale = roundScale;
+        this.exp = new Expression(ExpressionFragment.BASIC_POS, ex, trigFlag, roundScale);
     }
     
     /**
      * Constructor to initialize the object for operation. Specifically useful for method chaining.
-     * @param trig_flag the DEGREE flag (set:- {@code ExpressionRenderer.DEGREE} or {@code ExpressionRenderer.RADIAN})
-     * @param round_scale the rounding up scale (set:- Any integer no. within 0-9)
+     * @param trigFlag the DEGREE flag (set:- {@code ExpressionRenderer.DEGREE} or {@code ExpressionRenderer.RADIAN})
+     * @param roundScale the rounding up scale (set:- Any integer no. within 0-9)
      */
-    public ExpressionRenderer(int trig_flag, int round_scale){
-        this.trig_flag = trig_flag;
-        this.round_scale = round_scale;
+    public ExpressionRenderer(int trigFlag, int roundScale){
+        this.trigFlag = trigFlag;
+        this.roundScale = roundScale;
         this.result = 0.0;
         this.exp = null;
     }
@@ -77,7 +77,7 @@ public class ExpressionRenderer {
      */
     public ExpressionRenderer setExpression(String ex) throws BadExpressionFragmentException, BadExpressionException
     {
-        this.exp = new Expression(ExpressionFragment.BASIC_POS, ex, trig_flag, round_scale);
+        this.exp = new Expression(ExpressionFragment.BASIC_POS, ex, trigFlag, roundScale);
         
         return this;
     }
@@ -93,14 +93,14 @@ public class ExpressionRenderer {
      * <li>"X=3*4+sqrt(9)" means X=15.0</li>
      * <li>"X=A" means X=A=some pre-declared value</li>
      * </ul>
-     * @param cons_list the constant declarations
+     * @param consList the constant declarations
      * @return the reference to self
      * @throws IllegalInitialisationException if any declaration violates the paradigm
      * @throws BadExpressionFragmentException if the Constant that is to be initialized is not present in the pool
      */
-    public ExpressionRenderer add(String... cons_list) throws IllegalInitialisationException, BadExpressionFragmentException
+    public ExpressionRenderer add(String... consList) throws IllegalInitialisationException, BadExpressionFragmentException
     {
-        Constant.add(trig_flag, cons_list);
+        Constant.add(trigFlag, consList);
         return this;
     }
     
@@ -116,9 +116,9 @@ public class ExpressionRenderer {
      * @return the reference to self
      * @throws IllegalInitialisationException if declaration violates the paradigm
      */
-    public ExpressionRenderer add(String func_name, Method method) throws IllegalInitialisationException
+    public ExpressionRenderer add(String funcName, Method method) throws IllegalInitialisationException
     {
-        Function.add(func_name, method);
+        Function.add(funcName, method);
         return this;
     }
     

@@ -32,15 +32,15 @@ public class Constant extends ExpressionFragment {
     /**
      * The Map that will contain the constants. (The constant pool)
      */
-    private static HashMap<String, Double> cons_pool = new HashMap<>();
+    private static HashMap<String, Double> consPool = new HashMap<>();
     /**
      * The variable that will store a specific constant when an object is made
      */
-    private final String cons_name;
+    private final String consName;
     /**
      * Trigonometric Flag
      */
-    private static int trig_flag;
+    private static int trigFlag;
 
     /**
      * The {@code static} block that populates the Constant Pool
@@ -55,12 +55,12 @@ public class Constant extends ExpressionFragment {
      * @param pos the position in the fragment map
      * @param cons the name of the Constant
      * @param value the value of the fragment
-     * @param trig_fl the trigonometric flag i.e. DEGREE or RADIAN
+     * @param trigFl the trigonometric flag i.e. DEGREE or RADIAN
      */
-    public Constant(int pos, String cons, double value, int trig_fl) {
+    public Constant(int pos, String cons, double value, int trigFl) {
         super(pos, cons.toUpperCase());
-        this.cons_name = cons.toUpperCase();
-        trig_flag = trig_fl;
+        this.consName = cons.toUpperCase();
+        trigFlag = trigFl;
         convert();
         add(cons,value);
     }
@@ -70,15 +70,15 @@ public class Constant extends ExpressionFragment {
      * the value can be changed as many times needed, but the last change will persist.
      * @param pos the position
      * @param cons the name of the Constant
-     * @param trig_fl the trigonometric flag i.e. DEGREE or RADIAN
+     * @param trigFl the trigonometric flag i.e. DEGREE or RADIAN
      * @throws BadExpressionFragmentException if the Constant is not present in the pool
      */
-    public Constant(int pos, String cons, int trig_fl) throws BadExpressionFragmentException {
+    public Constant(int pos, String cons, int trigFl) throws BadExpressionFragmentException {
         super(pos, cons);
-        trig_flag = trig_fl;
+        trigFlag = trigFl;
         convert();
         if (exists(cons)) {
-            this.cons_name = cons.toUpperCase();
+            this.consName = cons.toUpperCase();
         } else {
             throw new BadExpressionFragmentException("Constant doesn't exist. Declare First", cons);
         }
@@ -88,9 +88,9 @@ public class Constant extends ExpressionFragment {
      * Converts the degree multiplicand with respect to the trigonometric flag.
      */
     private void convert() {
-        switch (trig_flag) {
+        switch (trigFlag) {
             case Function.DEGREE:
-                cons_pool.replace("PI", 180.0);
+                consPool.replace("PI", 180.0);
                 break;
             case Function.RADIAN:
                 break;
@@ -104,8 +104,8 @@ public class Constant extends ExpressionFragment {
      * @throws BadExpressionFragmentException if the number is Infinity or NaN
      */
     public Number get() throws BadExpressionFragmentException {
-        if (exists(cons_name)) {
-            return new Number(BASIC_POS, cons_pool.get(cons_name));
+        if (exists(consName)) {
+            return new Number(BASIC_POS, consPool.get(consName));
         }
         return new Number(BASIC_POS, 0.0);
     }
@@ -118,7 +118,7 @@ public class Constant extends ExpressionFragment {
      */
     public static double get(String cons) throws IllegalInitialisationException{
         if (exists(cons)) {
-            return cons_pool.get(cons);
+            return consPool.get(cons);
         }
         throw new IllegalInitialisationException("The constant doesn't exist in the pool\nConstant:-"+cons);
     }
@@ -130,7 +130,7 @@ public class Constant extends ExpressionFragment {
      */
     public static void add(String cons, double value) {
         if (isNotDefault(cons)) {
-            cons_pool.put(cons.toUpperCase(), value);
+            consPool.put(cons.toUpperCase(), value);
         }
     }
 
@@ -145,13 +145,13 @@ public class Constant extends ExpressionFragment {
      * <li>"X=3*4+sqrt(9)" means X=15.0</li>
      * <li>"X=A" means X=A=some pre-declared value</li>
      * </ul>
-     * @param trig_flag the trigonometric flag
-     * @param cons_list the constant initialization list
+     * @param trigFl the trigonometric flag
+     * @param consList the constant initialization list
      * @throws IllegalInitialisationException if initialization rules are violated
      * @throws BadExpressionFragmentException if expression fragments are not supported during initialization directly from an expression
      */
-    public static void add(int trig_flag, String... cons_list) throws IllegalInitialisationException, BadExpressionFragmentException {
-        for (String elem : cons_list) {
+    public static void add(int trigFl, String... consList) throws IllegalInitialisationException, BadExpressionFragmentException {
+        for (String elem : consList) {
             if (elem.matches(CONSTANT_PATTERN)) {
                 add(elem, 0.0);
             } else {
@@ -168,7 +168,7 @@ public class Constant extends ExpressionFragment {
                         }
                         else {
                             try {
-                                add(segments[0], new ExpressionRenderer(segments[1], trig_flag, 7).render().getResult());
+                                add(segments[0], new ExpressionRenderer(segments[1], trigFl, 7).render().getResult());
                             } catch (BadExpressionException | BadExpressionFragmentException e) {
                                 throw new IllegalInitialisationException();
                             }
@@ -196,7 +196,7 @@ public class Constant extends ExpressionFragment {
      */
     private static void populateConstantPool() {
         for (int i = 0; i < DEFAULT_CONS.length; i++) {
-            cons_pool.put(DEFAULT_CONS[i], DEFAULT_CONS_VALUES[i]);
+            consPool.put(DEFAULT_CONS[i], DEFAULT_CONS_VALUES[i]);
         }
     }
 
@@ -220,7 +220,7 @@ public class Constant extends ExpressionFragment {
      * @return {@code true} if the constant exists in the pool, otherwise {@code false}
      */
     public static boolean exists(String s) {
-        return cons_pool.containsKey(s);
+        return consPool.containsKey(s);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class Function extends ExpressionFragment {
     /**
      * Holds all the Functions in the pool
      */
-    private static HashMap<String,Method> function_pool = new HashMap<>();
+    private static HashMap<String,Method> functionPool = new HashMap<>();
     /**
      * Holds the final result after execution
      */
@@ -54,7 +54,7 @@ public class Function extends ExpressionFragment {
     /**
      * The trigonometric flag & round up scale
      */
-    private static int trig_flag, round_scale;
+    private static int trigFlag, roundScale;
     /**
      * The DEGREE and RADIAN statics to control the result
      */
@@ -79,17 +79,17 @@ public class Function extends ExpressionFragment {
      * The constructor that makes a Function fragment.
      * @param pos the position where the expression will exist
      * @param value the function in String format
-     * @param trig_fl the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
-     * @param round_sc the rounding up scale (set:- Any integer no. within 0-9)
+     * @param trigFl the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
+     * @param roundSc the rounding up scale (set:- Any integer no. within 0-9)
      * @throws BadExpressionFragmentException if expression fragments are unsupported
      * @throws BadExpressionException if function or expression can't be parsed
      */
-    public Function(int pos, String value, int trig_fl, int round_sc) throws BadExpressionFragmentException, BadExpressionException {
+    public Function(int pos, String value, int trigFl, int roundSc) throws BadExpressionFragmentException, BadExpressionException {
         super(pos, value);
-        trig_flag = trig_fl;
-        round_scale = round_sc;
+        trigFlag = trigFl;
+        roundScale = roundSc;
         formFunction(value);
-        switch (trig_flag) {
+        switch (trigFlag) {
             case DEGREE:
                 degree = Math.PI / 180;
                 break;
@@ -116,7 +116,7 @@ public class Function extends ExpressionFragment {
     {
         if (isNotDefault(s)){
             if (s.matches(FUNCTION_PATTERN))
-                function_pool.put(s, m);
+                functionPool.put(s, m);
             else
                 throw new IllegalInitialisationException();
         }
@@ -154,7 +154,7 @@ public class Function extends ExpressionFragment {
         this.name = temp;
         String args[] = (s.substring(i + 1, s.length() - 1)).split("[,]");
         for (String elem : args) {
-            this.exp.add(new Expression(BASIC_POS, elem, trig_flag, round_scale));
+            this.exp.add(new Expression(BASIC_POS, elem, trigFlag, roundScale));
         }
     }
     
@@ -184,17 +184,17 @@ public class Function extends ExpressionFragment {
                     case "sec":
                     case "tan":
                     case "cot":
-                        temp_res = (double)function_pool.get(name).invoke(null, temp.poll() * degree);
+                        temp_res = (double)functionPool.get(name).invoke(null, temp.poll() * degree);
                         break;
                     case "log":
                     case "ln":
                     case "sqrt":
                     case "fact":
-                        temp_res = (double)function_pool.get(name).invoke(null, temp.poll());
+                        temp_res = (double)functionPool.get(name).invoke(null, temp.poll());
                         break;
                     default:
-                        if (exists(name) && function_pool.get(name).getParameterCount()==temp.size())
-                            temp_res = (double)function_pool.get(name).invoke(null, temp.poll());
+                        if (exists(name) && functionPool.get(name).getParameterCount()==temp.size())
+                            temp_res = (double)functionPool.get(name).invoke(null, temp.poll());
                         else
                             throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
                 }
@@ -202,11 +202,11 @@ public class Function extends ExpressionFragment {
             case 2:
                 switch (name) {
                     case "pow":
-                        temp_res = (double)function_pool.get(name).invoke(null, temp.poll(), temp.poll());
+                        temp_res = (double)functionPool.get(name).invoke(null, temp.poll(), temp.poll());
                         break;
                     default:
-                        if (exists(name) && function_pool.get(name).getParameterCount()==temp.size())
-                            temp_res = (double)function_pool.get(name).invoke(null, temp.poll(), temp.poll());
+                        if (exists(name) && functionPool.get(name).getParameterCount()==temp.size())
+                            temp_res = (double)functionPool.get(name).invoke(null, temp.poll(), temp.poll());
                         else
                             throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
                 }
@@ -215,7 +215,7 @@ public class Function extends ExpressionFragment {
                 throw new BadExpressionFragmentException("Function doesn't exist with these arguments", super.getValue());
         }
 
-        result = new BigDecimal(temp_res).setScale(round_scale, RoundingMode.CEILING).doubleValue();
+        result = new BigDecimal(temp_res).setScale(roundScale, RoundingMode.CEILING).doubleValue();
         processed = true;
         }
         catch(IllegalAccessException| IllegalArgumentException| InvocationTargetException e)
@@ -243,7 +243,7 @@ public class Function extends ExpressionFragment {
      * @return {@code true} if the function exists in the pool, otherwise {@code false}
      */
     public static boolean exists(String s) {
-        return function_pool.containsKey(s);
+        return functionPool.containsKey(s);
     }
     
     /**
@@ -261,7 +261,7 @@ public class Function extends ExpressionFragment {
                 case "tan":
                 case "sqrt":
                 case "cbrt":
-                    function_pool.put(elem, Math.class.getDeclaredMethod(elem, double.class));
+                    functionPool.put(elem, Math.class.getDeclaredMethod(elem, double.class));
                     break;
                 case "cosec":
                 case "sec":
@@ -269,10 +269,10 @@ public class Function extends ExpressionFragment {
                 case "ln":
                 case "log":
                 case "fact":
-                    function_pool.put(elem, FunctionWrapper.class.getDeclaredMethod(elem, double.class));
+                    functionPool.put(elem, FunctionWrapper.class.getDeclaredMethod(elem, double.class));
                     break;
                 case "pow":
-                    function_pool.put(elem, Math.class.getDeclaredMethod(elem, double.class, double.class));
+                    functionPool.put(elem, Math.class.getDeclaredMethod(elem, double.class, double.class));
                     break;
             }
         }

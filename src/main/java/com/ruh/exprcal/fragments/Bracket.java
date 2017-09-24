@@ -29,7 +29,7 @@ public class Bracket extends ExpressionFragment implements Symbol {
     /**
      * Variable that stores the state
      */
-    private int brac_type;
+    private int bracType;
 
     /**
      * The constructor that makes a Bracket fragment
@@ -42,9 +42,9 @@ public class Bracket extends ExpressionFragment implements Symbol {
         if (exists(val)) {
             this.brac = val;
             if (this.brac == '(') {
-                this.brac_type = Bracket.OPEN;
+                this.bracType = Bracket.OPEN;
             } else if (this.brac == ')') {
-                this.brac_type = Bracket.CLOSE;
+                this.bracType = Bracket.CLOSE;
             }
         } else {
             throw new BadExpressionFragmentException("Not a Bracket", "" + val);
@@ -61,9 +61,9 @@ public class Bracket extends ExpressionFragment implements Symbol {
         if (exists(val)) {
             this.brac = val;
             if (this.brac == '(') {
-                this.brac_type = Bracket.OPEN;
+                this.bracType = Bracket.OPEN;
             } else if (this.brac == ')') {
-                this.brac_type = Bracket.CLOSE;
+                this.bracType = Bracket.CLOSE;
             }
         } else {
             throw new BadExpressionFragmentException("Not a Bracket", "" + val);
@@ -118,7 +118,7 @@ public class Bracket extends ExpressionFragment implements Symbol {
 
     @Override
     public int getType() {
-        return brac_type;
+        return bracType;
     }
 
     @Override
