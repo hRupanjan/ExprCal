@@ -140,8 +140,9 @@ public class Constant extends ExpressionFragment {
      * <ul>
      * <li>"X" means X=0</li>
      * <li>"X=" means X=0</li>
-     * <li>"X=10" means X=10</li>
+     * <li>"X=10" means X=10.0</li>
      * <li>"X=0.0" means X=0.0</li>
+     * <li>"X=3*4+sqrt(9)" means X=15.0</li>
      * <li>"X=A" means X=A=some pre-declared value</li>
      * </ul>
      * @param trig_flag the trigonometric flag

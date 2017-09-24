@@ -73,8 +73,24 @@ public class Expression extends ExpressionFragment {
         super(pos, s);
         trig_flag = trig_fl;
         round_scale = round_sc;
-        formParseMap(s);
+        formParseMap(trimSpaces(s));
         sample();
+    }
+    
+    /**
+     * Trim the spaces in the {@code String} expression
+     * @param s the expression in {@code String} format
+     * @return the re-formated {@code String} expression
+     */
+    private String trimSpaces(String s)
+    {
+        String temp="";
+        for (int i=0;i<s.length();i++)
+        {
+            if (s.charAt(i)!=' ')
+                temp += s.charAt(i);
+        }
+        return temp;
     }
 
     /**
