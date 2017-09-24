@@ -12,7 +12,7 @@ Basic setup to get result of an expression
 * Get the jar from `.../target` folder.
 
 ### Render an expression
-```obj
+```java
 String s="1.233---.999.00+sin(pow(2,PI))/cos(60)tan(45)";
 int round_up_scale = 4;
 double result = new ExpressionRenderer(s, ExpressionRenderer.DEGREE, round_up_scale).render().getResult();
@@ -47,11 +47,11 @@ Constants follow Uppercase paradigm. So always declare Constants in UpperCase to
 * "X=0.0" means X=0.0
 * "X=3*4+sqrt(9)" means X=15.0
 * "X=A" means X=A=some pre-declared value
-```objc
+```java
 Constant.add("X",Constant.get("PI")); Constant.add("Y",3.0);
 Constant.add("U","X=U","X=-sqrt(X)","Y=4");
 ```
-```objc
+```java
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 e.add("U","X=U","X=-sqrt(X)","Y=4");
 ```
@@ -64,17 +64,17 @@ The first parameter should be the name with which it will be known in the pool &
 * Functions follow Lowercase paradigm. So always declare Functions in Lowercase to avoid error.
 * The parameters passed should be Numbers
 * The return type of the Functions should be Number
-```objc
+```java
 Function.add("hlsin", Math.class.getDeclaredMethod("sin", double.class));
 ```
-```objc
+```java
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 e.add("abs", Math.class.getDeclaredMethod("abs", double.class));
 ```
 
 ### Method Chaining:
 Method chaining has been introduced for some functions invoked via an 'ExpressionRenderer' object.
-```objc
+```java
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 double res = e.add("U","X=U","X=-sqrt(X)","Y=4").add("abs", Math.class.getDeclaredMethod("abs", double.class)).setExpression(s).render().getResult();
 ```
