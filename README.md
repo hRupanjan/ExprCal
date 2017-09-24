@@ -5,8 +5,8 @@ A `String` expression is brought into Object Model for better processing & great
 ## Getting Started
 Basic setup to get result of an expression
 ### Initial Setup
-* [Install Maven] (https://www.tutorialspoint.com/maven/maven_environment_setup.htm)
-* Clone or Download the [repository] (https://github.com/hRupanjan/ExprCal).
+* [Install Maven](https://www.tutorialspoint.com/maven/maven_environment_setup.htm)
+* Clone or Download the [repository](https://github.com/hRupanjan/ExprCal).
 * Go to the project folder from your native terminal.
 * Build and Make an usable .jar file using command `mvn assembly:single`
 * Get the jar from `.../target` folder.
@@ -20,7 +20,7 @@ double result = new ExpressionRenderer(s, ExpressionRenderer.DEGREE, round_up_sc
 
 ## Features
 Every `Expression` type object has `ExpressionFramgment` objects in it stored into a hash-map
-Types of `ExpressionFramgment`s:-
+**Types of `ExpressionFramgment`s:-**
     * Number
     * Function
     * Expression
@@ -38,7 +38,7 @@ Types of `ExpressionFramgment`s:-
 
 ### Constant Pool:
 Constants follow Uppercase paradigm. So always declare Constants in UpperCase to avoid error.
-Types of Constant declarations:-
+**Types of Constant declarations:-**
     * "X" means X=0
     * "X=" means X=0
     * "X=10" means X=10.0
@@ -49,7 +49,7 @@ Types of Constant declarations:-
 Constant.add("X",Constant.get("PI")); Constant.add("Y",3.0);
 Constant.add("U","X=U","X=-sqrt(X)","Y=4");
 ```
-or
+                or
 ```
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 e.add("U","X=U","X=-sqrt(X)","Y=4");
@@ -58,14 +58,14 @@ e.add("U","X=U","X=-sqrt(X)","Y=4");
 ### Function Pool:
 `static` methods of any `class` can be inserted in the Function Pool.
 The first parameter should be the name with which it will be known in the pool & second should be the method itself.
-But Functions follow some rules:-
+**But Functions follow some rules:-**
     * Functions follow Lowercase paradigm. So always declare Functions in Lowercase to avoid error.
     * The parameters passed should be Numbers
     * The return type of the Functions should be Number
 ```
 Function.add("hlsin", Math.class.getDeclaredMethod("sin", double.class));
 ```
-or
+                or
 ```
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 e.add("abs", Math.class.getDeclaredMethod("abs", double.class));
@@ -77,6 +77,6 @@ Method chaining has been introduced for some functions invoked via an 'Expressio
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 double res = e.add("U","X=U","X=-sqrt(X)","Y=4").add("abs", Math.class.getDeclaredMethod("abs", double.class)).setExpression(s).render().getResult();
 ```
-###Warning:
+### Warning:
 * `Function`s and `Constant`s must be declared before setting the expression.
 * Don't declare Constants together. viz:- `don't write "PIX"` `write "PI*X"`
