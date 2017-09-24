@@ -43,7 +43,7 @@ public class ExpressionRenderer {
     public static final int DEGREE = Function.DEGREE, RADIAN = Function.RADIAN;
 
     /**
-     * Constructor to initialize the object for operation. (Method chaining isn't possible with Function & Constant addition)
+     * Constructor to initialize the object for operation. (Method chaining isn't possible with Function and Constant addition)
      * @param ex the expression in String format
      * @param trig_flag the DEGREE flag (set:- <code>ExpressionRenderer.DEGREE</code> or <code>ExpressionRenderer.RADIAN</code>)
      * @param round_scale the rounding up scale (set:- Any integer no. within 0-9)

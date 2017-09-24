@@ -7,7 +7,7 @@
 package com.ruh.exprcal.abstractions;
 
 /**
- * An interface that signifies the Operators & Brackets
+ * An interface that signifies the Operators and Brackets
  */
 public interface Symbol {
 
@@ -24,19 +24,17 @@ public interface Symbol {
     public int getPriority();
 
     /**
-     * Returns the type of the Symbol.
-     * <pre>
+     * Returns the type of the Symbol.<br>
      * For Operators:-
      * <ul>
      * <li>DUAL - signifies if the operator is both Binary and Sign i.e '+' or '-'</li>
-     * <li>BINARY - signifies if the opeartor is Binary i.e. '+','-','*','/' or '^'</li>
-     * </ul>
+     * <li>BINARY - signifies if the operator is Binary i.e. '+','-','*','/' or '^'</li>
+     * </ul><br>
      * For Brackets:-
      * <ul>
      * <li>OPEN - signifies if the Bracket is Open</li>
      * <li>CLOSE - signifies if the Bracket is Closed</li>
      * </ul>
-     * </pre>
      * @return the type of the symbol.
      */
     public int getType();

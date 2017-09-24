@@ -71,6 +71,7 @@ public class Number extends ExpressionFragment implements Comparable<Number> {
     /**
      * Sets the value of the fragment
      * @param num the value in {@code String} format
+     * @return the reference to self
      * @throws BadExpressionFragmentException if the Number is 'Infinity' or 'NaN'
      */
     public Number setNumber(String num) throws BadExpressionFragmentException {
@@ -89,6 +90,7 @@ public class Number extends ExpressionFragment implements Comparable<Number> {
     /**
      * Sets the value of the fragment
      * @param num the value in {@code java.lang.Number} format
+     * @return the reference to self
      * @throws BadExpressionFragmentException if the Number is 'Infinity' or 'NaN'
      */
     public Number setNumber(java.lang.Number num) throws BadExpressionFragmentException {

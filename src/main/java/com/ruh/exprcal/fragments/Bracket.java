@@ -55,7 +55,7 @@ public class Bracket extends ExpressionFragment implements Symbol {
      * Sets new value to the Bracket fragment
      * @param val the new value of the Bracket
      * @return a reference to self
-     * @throws BadExpressionFragmentException 
+     * @throws BadExpressionFragmentException if the character isn't supported
      */
     public Bracket setBracket(char val) throws BadExpressionFragmentException {
         if (exists(val)) {

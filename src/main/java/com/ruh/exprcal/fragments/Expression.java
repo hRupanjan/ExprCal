@@ -32,7 +32,7 @@ public class Expression extends ExpressionFragment {
      */
     private Stack<Symbol> symbols = new Stack<>();
     /**
-     * Stack for holding the numbers,constants,functions & expressions
+     * Stack for holding the numbers,constants,functions and expressions
      */
     private Stack<ExpressionFragment> numbers = new Stack<>();
     /**

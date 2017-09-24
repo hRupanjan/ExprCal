@@ -147,8 +147,8 @@ public class Constant extends ExpressionFragment {
      * </ul>
      * @param trig_flag the trigonometric flag
      * @param cons_list the constant initialization list
-     * @throws IllegalInitialisationException
-     * @throws BadExpressionFragmentException 
+     * @throws IllegalInitialisationException if initialization rules are violated
+     * @throws BadExpressionFragmentException if expression fragments are not supported during initialization directly from an expression
      */
     public static void add(int trig_flag, String... cons_list) throws IllegalInitialisationException, BadExpressionFragmentException {
         for (String elem : cons_list) {

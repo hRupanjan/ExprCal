@@ -8,8 +8,8 @@ Basic setup to get result of an expression
 * [Install Maven](https://www.tutorialspoint.com/maven/maven_environment_setup.htm)
 * Clone or Download the [repository](https://github.com/hRupanjan/ExprCal).
 * Go to the project folder from your native terminal.
-* Build and Make an usable .jar file using command `mvn assembly:single`
-* Get the jar from `.../target` folder.
+* Build and Make an usable .jar file using command `mvn install`
+* Get the *.jar files from `.../target` folder.
 
 ### Render an expression
 ```java
