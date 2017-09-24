@@ -31,8 +31,8 @@ Every `Expression` type object has `ExpressionFramgment` objects in it stored in
 * Bracket
 
 ### Expression types that are accepted 
-* [(Number*)(Function*)(Constant*)] - [(Number*)[//*](Function*)[//*](Constant*)] (represented in `regex`)
-* [(Number+|Function+|Constant+)Operator(Number+|Function+|Constant+)] (represented in `regex`)
+* `[(Number*)(Function*)(Constant*)] - [(Number*)[//*](Function*)[//*](Constant*)]` (represented in `regex`)
+* `[(Number+|Function+|Constant+)Operator(Number+|Function+|Constant+)]` (represented in `regex`)
 * Number String [1.233.999.00.33] - 1.233 * 0.999 * 0.00 * 0.33
 * Function inside Function i.e. `f(g(X))` is accepted.
 * Fragments with spaces can also be written for better expression readability
@@ -47,12 +47,11 @@ Constants follow Uppercase paradigm. So always declare Constants in UpperCase to
 * "X=0.0" means X=0.0
 * "X=3*4+sqrt(9)" means X=15.0
 * "X=A" means X=A=some pre-declared value
-```
+```objjava
 Constant.add("X",Constant.get("PI")); Constant.add("Y",3.0);
 Constant.add("U","X=U","X=-sqrt(X)","Y=4");
 ```
-                                 or
-```
+```objjava
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 e.add("U","X=U","X=-sqrt(X)","Y=4");
 ```
@@ -65,11 +64,10 @@ The first parameter should be the name with which it will be known in the pool &
 * Functions follow Lowercase paradigm. So always declare Functions in Lowercase to avoid error.
 * The parameters passed should be Numbers
 * The return type of the Functions should be Number
-```
+```objc
 Function.add("hlsin", Math.class.getDeclaredMethod("sin", double.class));
 ```
-                                  or
-```
+```objc
 ExpressionRenderer e = new ExpressionRenderer(ExpressionRenderer.DEGREE, 4);
 e.add("abs", Math.class.getDeclaredMethod("abs", double.class));
 ```
