@@ -111,7 +111,7 @@ public class ExpressionRenderer {
      * if Math.abs(double a) is the method that is to be added to the pool then do it like
      * Eg:- {@code object.add("absolute", Math.class.getDeclaredMethod("abs", double.class));}
      * </pre>
-     * @param func_name the name by which the method will be known in the expression
+     * @param funcName the name by which the method will be known in the expression
      * @param method the {@code static} method that will be invoked
      * @return the reference to self
      * @throws IllegalInitialisationException if declaration violates the paradigm
