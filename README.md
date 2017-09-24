@@ -31,11 +31,11 @@ Every `Expression` type object has `ExpressionFramgment` objects in it stored in
 * Bracket
 
 ### Expression types that are accepted 
-    * [(Number*)(Function*)(Constant*)] - [(Number*)[//*](Function*)[//*](Constant*)] (represented in `regex`)
-    * [(Number+|Function+|Constant+)Operator(Number+|Function+|Constant+)] (represented in `regex`)
-    * Number String [1.233.999.00.33] - 1.233 * 0.999 * 0.00 * 0.33
-    * Function inside Function i.e. `f(g(X))` is accepted.
-    * Fragments with spaces can also be written for better expression readability
+* [(Number*)(Function*)(Constant*)] - [(Number*)[//*](Function*)[//*](Constant*)] (represented in `regex`)
+* [(Number+|Function+|Constant+)Operator(Number+|Function+|Constant+)] (represented in `regex`)
+* Number String [1.233.999.00.33] - 1.233 * 0.999 * 0.00 * 0.33
+* Function inside Function i.e. `f(g(X))` is accepted.
+* Fragments with spaces can also be written for better expression readability
 
 ### Constant Pool:
 Constants follow Uppercase paradigm. So always declare Constants in UpperCase to avoid error.
