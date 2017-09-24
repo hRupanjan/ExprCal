@@ -81,3 +81,15 @@ double res = e.add("U","X=U","X=-sqrt(X)","Y=4").add("abs", Math.class.getDeclar
 ### Warning:
 * `Function`s and `Constant`s must be declared before setting the expression.
 * Don't declare Constants together. viz:- `don't write "PIX"` `write "PI*X"`
+
+
+## Testing
+Testing the library using JUnit framework.
+### Setting Up & Testing
+* [Install JUnit](https://www.tutorialspoint.com/junit/junit_environment_setup.htm)
+* Move to the `..src\test\java\com\ruh\exprcal\test` directory.
+* Add test cases to `A.class` with `Annotation` @Test ; So that JUnit can recognise it as a test case.
+* Compile `A.java` & `ExprCalTest.java`.
+* Run `ExprCalTest` class.
+
+You can also test using your own ways.
