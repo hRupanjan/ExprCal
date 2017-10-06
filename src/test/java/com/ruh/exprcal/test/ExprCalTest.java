@@ -5,15 +5,11 @@
  */
 package com.ruh.exprcal.test;
 
+import java.sql.Time;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
 
 /**
  *
@@ -33,6 +29,6 @@ public class ExprCalTest {
         result.getFailures().forEach((failure) -> {
             System.out.println(failure.getMessage());
         });
-        System.out.println(result.wasSuccessful());
+        System.out.println(new Time(result.getRunTime()).toLocalTime() + " " + ((result.wasSuccessful())?"Succeded":"Failed") );
     }
 }

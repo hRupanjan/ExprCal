@@ -90,7 +90,7 @@ Testing the library using JUnit framework.
 * [Install JUnit](https://www.tutorialspoint.com/junit/junit_environment_setup.htm)
 * Move to the `..src\test\java\com\ruh\exprcal\test` directory.
 * Add test cases to `A.class` with `Annotation` @Test ; So that JUnit can recognise it as a test case.
-* Compile `A.java` & `ExprCalTest.java`.
+* Compile [A.java](https://github.com/hRupanjan/ExprCal/blob/master/src/test/java/com/ruh/exprcal/test/A.java) & [ExprCalTest.java](https://github.com/hRupanjan/ExprCal/blob/master/src/test/java/com/ruh/exprcal/test/ExprCalTest.java).
 * Run `ExprCalTest` class.
 
 You can also test using your own ways.
